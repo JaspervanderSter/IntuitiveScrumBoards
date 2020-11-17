@@ -1,0 +1,51 @@
+body {
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+}
+
+.App {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.board-header {
+  display: flex;
+  margin-bottom: 16px;
+}
+
+.board-header-item {
+  flex: 1 1 0;
+  font-size: 14pt;
+  text-align: center;
+}
+
+.board-row {
+  display: flex;
+  padding: 16px 0px;
+  margin: 8px 0px;
+  border-radius: 8px;
+}
+
+.board-content .board-row:nth-child(even) {
+  background-color: #F5E0E4;
+}
+
+.board-content > .board-row:nth-child(odd) {
+  background-color: #EDF6F9;
+}
+
+.board-cell {
+  flex: 1 1 0;
+  padding: 8px 16px;
+}
+
+.board-index-cell {
+  font-size: 12pt;
+}
+
+.padding-16 {
+  padding: 16px;
+}

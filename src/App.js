@@ -1,6 +1,5 @@
 import React from "react";
 import "./App.css";
-import "./StatusHeader.js";
 import UserStoryRow from "./UserStoryRow.js"
 import mondaySdk from "monday-sdk-js";
 import { DragDropContext } from "react-beautiful-dnd";
@@ -127,10 +126,20 @@ class App extends React.Component {
         }
       });
       
-    })
+    });
 
     monday.listen("settings", res => {
       this.getSettings(res)
+      monday.api(`query ($boardIds: [Int]) { boards (ids:$boardIds) { name columns {id} items { id name column_values {id title text type value} } } }`,
+        { variables: {boardIds: this.state.context.boardIds} }
+      )
+      .then(res => {
+        this.setState({boardData: res.data});
+        if (this.state.boardData !== undefined) {
+          this.getStatusList();
+          this.getItemsObj();
+        }
+      });
     });
     
   }
@@ -172,13 +181,14 @@ class App extends React.Component {
     }
   }
 
-  renderUserStoryRow(userStoryObj, userStory) {
+  renderUserStoryRow(userStoryObj, userStory, index) {
     return (
       <UserStoryRow
         userStoryObj = {userStoryObj}
         name = {userStory}
         orderedStatuses = {this.state.orderedStatuses}
         key = {userStory}
+        rowIndex = {index}
       />
     )
   }
@@ -199,7 +209,7 @@ class App extends React.Component {
         <DragDropContext onDragEnd={(result) => this.handleOnDragEnd(result)}>
           <div className="board-content">
             {Object.keys(itemsByUserStory).map((value, index) => {
-              return this.renderUserStoryRow(itemsByUserStory[value], value)
+              return this.renderUserStoryRow(itemsByUserStory[value], value, index)
             })}
           </div>
         </DragDropContext>

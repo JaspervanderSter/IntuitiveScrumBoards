@@ -1,3 +1,9 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: "Roboto", sans-serif;
@@ -24,7 +30,6 @@ body {
 
 .board-row {
   display: flex;
-  padding: 16px 0px;
   margin: 8px 0px;
   border-radius: 8px;
 }
@@ -37,13 +42,10 @@ body {
   background-color: #EDF6F9;
 }
 
-.board-cell {
-  flex: 1 1 0;
-  padding: 8px 16px;
-}
-
 .board-index-cell {
+  flex: 1 1 0;
   font-size: 12pt;
+  padding: 16px;
 }
 
 .padding-16 {

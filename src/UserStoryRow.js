@@ -3,9 +3,6 @@ import BoardCell from "./BoardCell.js"
 
 
 class UserStoryRow extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     renderBoardCell(value, index, rowIndex) {
         return (
@@ -23,7 +20,7 @@ class UserStoryRow extends React.Component {
     render() {
         return (
             <div className="board-row" key={this.props.name}>
-                <div className="board-index-cell board-cell">
+                <div className="board-index-cell">
                     {this.props.name}
                 </div>
                 {

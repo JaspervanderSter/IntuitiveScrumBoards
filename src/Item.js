@@ -13,9 +13,6 @@ const Container = styled.div`
 `;
 
 class Item extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         return (

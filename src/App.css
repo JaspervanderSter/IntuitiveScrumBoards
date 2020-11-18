@@ -48,6 +48,41 @@ body {
   padding: 16px;
 }
 
+.board-cell {
+  flex: 1 1 0;
+  align-items: stretch;
+  position: relative;
+}
+
 .padding-16 {
   padding: 16px;
+}
+
+.add-item-button {
+  display: none;
+  border-radius: 2px;
+  border: 1px solid lightgrey;
+  background-color: #fff;
+  position: absolute;
+  bottom: 8px;
+  right: 16px;
+  max-width: 24px;
+  max-height: 24px;
+}
+
+.add-item-button:hover {
+  background-color: #ddd;
+  cursor: pointer;
+}
+
+.add-item-button > img {
+  max-width: 100%;
+}
+
+.board-cell:hover > .add-item-button {
+  display: block;
+}
+
+.board-cell > * {
+  height: 100%;
 }

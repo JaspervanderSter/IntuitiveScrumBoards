@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import Modal from "./Modal.js"
 import UserStoryRow from "./UserStoryRow.js"
 import mondaySdk from "monday-sdk-js";
 import { DragDropContext } from "react-beautiful-dnd";
@@ -17,9 +18,15 @@ class App extends React.Component {
       statusColumn: null,
       statusObj: {},
       userStoryColumn: null,
+      userStoryColumnInfo: null,
       itemsList: [],
       orderedStatuses: [],
+      showModal: false,
     };
+  }
+
+  showItemModal() {
+    this.setState({showModal: !this.state.show});
   }
 
   getSettings(res) {
@@ -42,9 +49,22 @@ class App extends React.Component {
       userStoryColumn = Object.keys(userStoryColumn)[0];
       this.setState({ userStoryColumn: userStoryColumn });
       if (this.state.boardData !== undefined) {
+        this.getUserStoryColumnInfo();
         this.getItemsObj();
       }
     }
+  }
+
+  getUserStoryColumnInfo() {
+    monday.api(`query ($boardIds: [Int], $columnIds: [String]) { boards (ids:$boardIds) { columns (ids:$columnIds) {type settings_str} } }`,
+        { variables: {boardIds: this.state.context.boardIds, columnIds: [this.state.userStoryColumn]} }
+      )
+      .then(res => {
+        var userStoryColumns = res.data.boards[0].columns[0];
+        if (userStoryColumns !== undefined) {
+          this.setState({userStoryColumnInfo: userStoryColumns[0]});
+        }
+      });
   }
 
   getStatusList() {
@@ -70,7 +90,8 @@ class App extends React.Component {
         UserStoryTitles.push(getColumnValue(items[item].column_values, this.state.userStoryColumn))
       }
     }
-    return new Set(UserStoryTitles);
+    var userStoryTitles = new Set(UserStoryTitles);
+    return [...userStoryTitles].sort();
   }
 
   getItemsObj() {
@@ -154,7 +175,6 @@ class App extends React.Component {
 
     if (originObj.userStoryName === destinationObj.userStoryName) {
       var copyItemsList = _.cloneDeep(this.state.itemsList);
-      console.log(itemId);
       for (var item in copyItemsList) {
         if (parseInt(copyItemsList[item].task.id) === itemId) {
           copyItemsList[item].status = destinationObj.statusLabel;
@@ -197,23 +217,27 @@ class App extends React.Component {
 
     var itemsByUserStory = this.getItemsByUserStory(this.state.itemsList);
     return (
-      <div
-        className="better-scrum-board padding-16"
-      >
-        <div className="board-header">
-          <div className="board-header-item board-header-user-story"></div>
-          {this.state.orderedStatuses.map((value, index) => {
-            return <div key={value.label} className="board-header-item board-header-status">{value.label}</div>
-          })}
-        </div>
-        <DragDropContext onDragEnd={(result) => this.handleOnDragEnd(result)}>
-          <div className="board-content">
-            {Object.keys(itemsByUserStory).map((value, index) => {
-              return this.renderUserStoryRow(itemsByUserStory[value], value, index)
+      <div>
+        <div
+          className="better-scrum-board padding-16"
+        >
+          <div className="board-header">
+            <div className="board-header-item board-header-user-story"></div>
+            {this.state.orderedStatuses.map((value, index) => {
+              return <div key={value.label} className="board-header-item board-header-status">{value.label}</div>
             })}
           </div>
-        </DragDropContext>
+          <DragDropContext onDragEnd={(result) => this.handleOnDragEnd(result)}>
+            <div className="board-content">
+              {Object.keys(itemsByUserStory).sort().map((value, index) => {
+                return this.renderUserStoryRow(itemsByUserStory[value], value, index)
+              })}
+            </div>
+          </DragDropContext>
+        </div>
+        <Modal show={this.state.show} />
       </div>
+      
     );
   }
 }

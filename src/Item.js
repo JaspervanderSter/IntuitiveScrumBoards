@@ -3,12 +3,16 @@ import styled from "styled-components";
 import { Draggable } from 'react-beautiful-dnd';
 
 const Container = styled.div`
-    border: 1px solid lightgrey;
-    background-color: ${props => (props.isDragging ? "#ddd" : "#fff")};
+    border: 1px solid ${props => (props.isDragging ? "#00CA72" : "#E6E9EF")};
+    background-color: ${props => (props.isDragging ? "#CCF4E3" : "#FFF")};
     padding: 8px;
-    border-radius: 2px;
+    margin: 4px 0px;
+    border-radius: 4px;
+    opacity: ${props => (props.isDragging ? 0.7 : 1.0)};
+    font-size: 10pt;
     &:hover {
-        background-color: #eee;
+        background-color: #DFF0FF;
+        border-color: #0085FF;
     }
 `;
 

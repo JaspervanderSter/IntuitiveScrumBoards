@@ -6,10 +6,9 @@ import PlusIcon from "./img/plus_icon.png"
 
 const Container = styled.div`
     background-color: ${props => (props.color)};
-    padding: 0px 8px;
+    padding: 4px 8px;
     border-size: 2px;
-    border-radius: 4px;
-    margin: 0px 0px;
+    margin: 0px 4px;
     &:hover {
         background-color: ${props => (props.isDraggingOver ? props.hoverColor : props.color)};
     }
@@ -51,9 +50,6 @@ class BoardCell extends React.Component {
                         </Container>
                     )}
                 </Droppable>
-                <div className="add-item-button">
-                    <img src={PlusIcon}/>
-                </div>
             </div>
             
         )

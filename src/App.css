@@ -30,22 +30,17 @@ body {
 
 .board-row {
   display: flex;
-  margin: 8px 0px;
+  margin: 16px 0px;
   border-radius: 8px;
-}
-
-.board-content .board-row:nth-child(even) {
-  background-color: #F5E0E4;
-}
-
-.board-content > .board-row:nth-child(odd) {
-  background-color: #EDF6F9;
 }
 
 .board-index-cell {
   flex: 1 1 0;
   font-size: 12pt;
   padding: 16px;
+  margin-right: 4px;
+  background-color: #F5F6F8;
+  border-bottom: 1px solid #E6E9EF;
 }
 
 .board-cell {
@@ -61,8 +56,8 @@ body {
 .add-item-button {
   display: none;
   border-radius: 2px;
-  border: 1px solid lightgrey;
-  background-color: #fff;
+  border: 1px solid #E6E9EF;
+  background-color: #FFFFFF;
   position: absolute;
   bottom: 8px;
   right: 16px;

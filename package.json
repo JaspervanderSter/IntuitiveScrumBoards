@@ -16,6 +16,7 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "monday-sdk-js": "^0.1.1",
+    "monday-ui-react-core": "0.0.19",
     "react": "^16.13.0",
     "react-beautiful-dnd": "^13.0.0",
     "react-dom": "^16.13.0",
@@ -40,6 +41,7 @@
   "devDependencies": {
     "concurrently": "^5.2.0",
     "cross-port-killer": "^1.2.1",
-    "ngrok": "^3.2.7"
+    "ngrok": "^3.2.7",
+    "sass": "^1.29.0"
   }
 }

@@ -8,7 +8,7 @@ class UserStoryRow extends React.Component {
         return (
             <BoardCell
                 status = {value}
-                userStories = {this.props.userStoryObj[value.label]}
+                items = {this.props.userStoryObj[value.label]}
                 userStoryName = {this.props.name}
                 key = {value.label}
                 index = {index}
@@ -25,6 +25,7 @@ class UserStoryRow extends React.Component {
                 </div>
                 {
                     this.props.orderedStatuses.map((value, index) => {
+                        console.log(this.props.userStoryObj[value.label]);
                         return this.renderBoardCell(value, index, this.props.rowIndex);
                     })
                 }

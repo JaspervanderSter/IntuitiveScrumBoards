@@ -1,26 +1,49 @@
 import React from "react";
 import styled from "styled-components";
 import { Draggable } from 'react-beautiful-dnd';
+import { Tooltip } from "monday-ui-react-core";
+import './Tooltip.scss';
+import mondaySdk from "monday-sdk-js";
+const monday = mondaySdk();
 
 const Container = styled.div`
-    border: 1px solid ${props => (props.isDragging ? "#00CA72" : "#E6E9EF")};
-    background-color: ${props => (props.isDragging ? "#CCF4E3" : "#FFF")};
+    border: 1px solid #E6E9EF;
+    background-color: #FFFFFF;
     padding: 8px;
     margin: 4px 0px;
     border-radius: 4px;
     opacity: ${props => (props.isDragging ? 0.7 : 1.0)};
     font-size: 10pt;
-    &:hover {
-        background-color: #DFF0FF;
-        border-color: #0085FF;
-    }
+    cursor: pointer;
 `;
+
 
 class Item extends React.Component {
 
-    render() {
+    renderPerson(value, index) {
         return (
-            <Draggable key={this.props.id} draggableId={this.props.id} index={this.props.index}>
+            <div className="item-people-photo" key={value}>
+                <Tooltip 
+                    theme="white"
+                    content={value.name}
+                >
+                    <img src={value.photo}></img>
+                </Tooltip>
+            </div>
+            
+            
+        )
+    }
+
+
+    render() {
+        console.log(this.props);
+        return (
+            <Draggable
+                key={this.props.id}
+                draggableId={this.props.id}
+                index={this.props.index}
+            >
                 {(provided, snapshot) => (
                     <Container className="board-item" ref={provided.innerRef}
                         {...provided.draggableProps}
@@ -28,7 +51,24 @@ class Item extends React.Component {
                         innerRef={provided.innerRef}
                         isDragging={snapshot.isDragging}
                     >
-                        {this.props.title}
+                        <div className="item-header">
+                            <div className="item-title" onClick={() => monday.execute('openItemCard', { itemId: parseInt(this.props.id), kind: "updates" })}>
+                                {this.props.title}
+                            </div>
+                        </div>
+                        
+                        <div className="item-info">
+
+                        </div>
+
+                        <div className="item-people">
+                            {
+                                this.props.people.map((value, index) => {
+                                    return this.renderPerson(value, index);
+                                })
+                            }
+                        </div>
+                        
                     </Container>
                 )}
             </Draggable>

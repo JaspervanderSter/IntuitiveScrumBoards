@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { Droppable } from "react-beautiful-dnd";
 import Item from "./Item.js"
-import PlusIcon from "./img/plus_icon.png"
 
 const Container = styled.div`
     background-color: ${props => (props.color)};
@@ -20,7 +19,9 @@ class BoardCell extends React.Component {
         return (
             <Item
                 title = {value.task.name}
+                taskInfo = {value.task}
                 index = {index}
+                people = {value.people}
                 id = {value.task.id}
                 key = {value.task.id}
             />
@@ -28,7 +29,7 @@ class BoardCell extends React.Component {
     }
 
     render() {
-        var userStories = this.props.userStories || [];
+        var items = this.props.items || [];
         return (
             <div className="board-cell">
                 <Droppable className="board-cell-droppable" key={this.props.status.label} droppableId={JSON.stringify({userStoryName: this.props.userStoryName, statusLabel: this.props.status.label})}>
@@ -42,7 +43,7 @@ class BoardCell extends React.Component {
                             hoverColor={this.props.rowIndex % 2 ? "#EBC2CA" : "#D0E7Ef"}
                         >
                             {
-                                userStories.map((value, index) => {
+                                items.map((value, index) => {
                                     return this.renderItem(value, index);
                                 })
                             }

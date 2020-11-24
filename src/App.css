@@ -28,6 +28,10 @@ body {
   text-align: center;
 }
 
+.board-header-user-story {
+  padding: 0px 16px;
+}
+
 .board-row {
   display: flex;
   margin: 16px 0px;
@@ -80,4 +84,23 @@ body {
 
 .board-cell > * {
   height: 100%;
+}
+
+.item-people {
+  display: flex;
+  margin-top: 16px;
+  flex-direction: row-reverse;
+}
+
+.item-people-photo {
+  margin-left: -8px;
+}
+
+.item-people-photo > img {
+  width: 30px;
+  height: 30px;
+}
+
+.item-info {
+  padding: 0px 8px;
 }

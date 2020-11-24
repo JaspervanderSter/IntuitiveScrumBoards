@@ -22,6 +22,7 @@ class App extends React.Component {
       itemsList: [],
       orderedStatuses: [],
       showModal: false,
+      userObj: {},
     };
   }
 
@@ -98,17 +99,30 @@ class App extends React.Component {
     if (this.state.userStoryColumn === null) {
       return [];
     }
+    if (!this.state.boardData.boards || !this.state.boardData.boards[0]) {
+      return [];
+    }
     var items = this.state.boardData.boards[0].items;
     var itemsList = [];
 
     for (var item in items) {
       var userStory = getColumnValue(items[item].column_values, this.state.userStoryColumn);
       var status = getColumnValue(items[item].column_values, this.state.statusColumn);
+      var people = getColumnValueByType(items[item].column_values, "multiple-person") || [];
+      var peopleList = [];
+      for (var person in people.personsAndTeams) {
+        console.log("personsAndTeams: ");
+        console.log(people.personsAndTeams[person]);
+        var personId = people.personsAndTeams[person].id;
+        console.log(this.state.userObj);
+        peopleList.push(this.state.userObj[personId]);
+      }
 
       var itemObj = {
         userStoryName: userStory,
         status: status,
-        task: items[item]
+        task: items[item],
+        people: peopleList,
       }
       itemsList.push(itemObj);
     }
@@ -133,7 +147,21 @@ class App extends React.Component {
     return itemsByUserStory
   }
 
+
   componentDidMount() {
+    monday.api(`query { users { id name photo_tiny} }`)
+      .then(res => {
+        var userList = res.data.users || [];
+        var userObj = {}
+        for (var user in userList) {
+          userObj[userList[user].id] = {
+            name: userList[user].name,
+            photo: userList[user].photo_tiny,
+          }
+        }
+        this.setState({userObj: userObj});
+      });
+
     monday.listen("context", res => {
       this.setState({context: res.data});
       monday.api(`query ($boardIds: [Int]) { boards (ids:$boardIds) { name columns {id} items { id name column_values {id title text type value} } } }`,
@@ -214,8 +242,10 @@ class App extends React.Component {
   }
 
   render() {
-
     var itemsByUserStory = this.getItemsByUserStory(this.state.itemsList);
+    console.log(this.state.userObj);
+    console.log(itemsByUserStory);
+    console.log(this.state.itemsList);
     return (
       <div>
         <div
@@ -267,6 +297,16 @@ function getColumnValue(columnValues, columnId) {
     var columnValue = columnValues[index];
     if (columnValue.id === columnId) {
       return columnValue.text;
+    }
+  }
+  return null;
+}
+
+function getColumnValueByType(columnValues, type) {
+  for (var index in columnValues) {
+    var columnValue = columnValues[index];
+    if (columnValue.type === type) {
+      return JSON.parse(columnValue.value);
     }
   }
   return null;

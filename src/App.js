@@ -111,10 +111,7 @@ class App extends React.Component {
       var people = getColumnValueByType(items[item].column_values, "multiple-person") || [];
       var peopleList = [];
       for (var person in people.personsAndTeams) {
-        console.log("personsAndTeams: ");
-        console.log(people.personsAndTeams[person]);
         var personId = people.personsAndTeams[person].id;
-        console.log(this.state.userObj);
         peopleList.push(this.state.userObj[personId]);
       }
 
@@ -190,7 +187,22 @@ class App extends React.Component {
         }
       });
     });
-    
+
+    monday.listen("events", async (res) => {
+      console.log(res);
+      await delay(600);
+      console.log(res);
+      monday.api(`query ($boardIds: [Int]) { boards (ids:$boardIds) { name columns {id} items { id name column_values {id title text type value} } } }`,
+        { variables: {boardIds: this.state.context.boardIds} }
+      )
+      .then(res => {
+        this.setState({boardData: res.data});
+        if (this.state.boardData !== undefined) {
+          this.getStatusList();
+          this.getItemsObj();
+        }
+      });
+    })
   }
 
   handleOnDragEnd(result) {
@@ -243,9 +255,6 @@ class App extends React.Component {
 
   render() {
     var itemsByUserStory = this.getItemsByUserStory(this.state.itemsList);
-    console.log(this.state.userObj);
-    console.log(itemsByUserStory);
-    console.log(this.state.itemsList);
     return (
       <div>
         <div
@@ -271,6 +280,8 @@ class App extends React.Component {
     );
   }
 }
+
+const delay = ms => new Promise(res => setTimeout(res, ms));
 
 function getOrderedStatusList(labels, labelColors, labelPositions) {
   var labelObjList = [];

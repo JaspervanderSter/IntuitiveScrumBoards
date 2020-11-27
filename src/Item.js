@@ -22,12 +22,12 @@ class Item extends React.Component {
 
     renderPerson(value, index) {
         return (
-            <div className="item-people-photo" key={value}>
+            <div className="item-people-photo" key={value.name}>
                 <Tooltip 
                     theme="white"
                     content={value.name}
                 >
-                    <img src={value.photo}></img>
+                    <img src={value.photo} alt={value.name}></img>
                 </Tooltip>
             </div>
             
@@ -37,7 +37,6 @@ class Item extends React.Component {
 
 
     render() {
-        console.log(this.props);
         return (
             <Draggable
                 key={this.props.id}
@@ -52,7 +51,7 @@ class Item extends React.Component {
                         isDragging={snapshot.isDragging}
                     >
                         <div className="item-header">
-                            <div className="item-title" onClick={() => monday.execute('openItemCard', { itemId: parseInt(this.props.id), kind: "updates" })}>
+                            <div className="item-title" onClick={() => monday.execute('openItemCard', { itemId: parseInt(this.props.id), kind: "columns" })}>
                                 {this.props.title}
                             </div>
                         </div>

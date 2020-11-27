@@ -32,7 +32,12 @@ class BoardCell extends React.Component {
         var items = this.props.items || [];
         return (
             <div className="board-cell">
-                <Droppable className="board-cell-droppable" key={this.props.status.label} droppableId={JSON.stringify({userStoryName: this.props.userStoryName, statusLabel: this.props.status.label})}>
+                <Droppable
+                    className="board-cell-droppable"
+                    key={this.props.status.label}
+                    droppableId={JSON.stringify({userStoryName: this.props.userStoryName, statusLabel: this.props.status.label})}
+                    type={this.props.userStoryName}
+                >
                     {(provided, snapshot) => (
                         <Container
                             {...provided.droppableProps}

@@ -25,12 +25,9 @@ class UserStoryRow extends React.Component {
                 </div>
                 {
                     this.props.orderedStatuses.map((value, index) => {
-                        console.log(this.props.userStoryObj[value.label]);
                         return this.renderBoardCell(value, index, this.props.rowIndex);
                     })
                 }
-                
-                
             </div>
         )
     }

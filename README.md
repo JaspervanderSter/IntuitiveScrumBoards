@@ -48,9 +48,3 @@ If you need specific help, we will move to email for specific support and provid
 We only use the Monday.com API to get data to display your Scrum Boards.
 This data is not processed or collected by us outside of Monday.com.
 We have no relation to Scrum.org.
-
-## Known issues
-It could happen that a board is throwing an error when it is a Monday.com board.
-In this case, it is easily fixed by duplicating a column and removing the duplicate right away.
-This will make it so you have access to all columns.
-This bug has been reported to Monday.com.

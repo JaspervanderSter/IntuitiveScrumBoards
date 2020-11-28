@@ -83,3 +83,35 @@ $arrow-size-md: 16px;
   box-shadow: $box-shadow-medium;
   border: $white-theme-border;
 }
+
+.monday-style-tooltip-surface,
+.monday-style-arrow-surface {
+  background-color: $surface-theme-bg-color;
+  color: $surface-theme-font-color;
+}
+
+.monday-style-arrow {
+  width: $arrow-size;
+  height: $arrow-size;
+  position: absolute;
+  border-radius: 2px 0 2px 0;
+}
+
+.monday-style-tooltip-arrow {
+  &[data-placement*="bottom"] {
+    top: 0;
+  }
+  &[data-placement*="top"] {
+    bottom: 0;
+  }
+  &[data-placement*="left"] {
+    right: 0;
+  }
+  &[data-placement*="right"] {
+    left: 0;
+  }
+}
+
+.monday-style-dialog-content-component {
+  padding: 6px;
+}

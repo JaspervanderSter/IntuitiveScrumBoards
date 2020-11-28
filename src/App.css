@@ -1,7 +1,21 @@
+@font-face {
+  font-family: 'Roboto';
+  src: local('Roboto Light'), url(./fonts/Roboto/Roboto-Light.ttf) format('truetype');
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: local('Roboto'), url(./fonts/Roboto/Roboto-Regular.ttf) format('truetype');
+  font-weight: normal;
+}
+
+
 * {
   margin: 0px;
   padding: 0px;
   box-sizing: border-box;
+  font-weight: 300
 }
 
 body {
@@ -17,15 +31,11 @@ body {
   justify-content: center;
 }
 
-.board-header {
-  display: flex;
-  margin-bottom: 16px;
-}
-
 .board-header-item {
   flex: 1 1 0;
-  font-size: 14pt;
+  font-size: 20px;
   text-align: center;
+  font-weight: normal;
 }
 
 .board-header-user-story {
@@ -35,47 +45,41 @@ body {
 .board-row {
   display: flex;
   margin: 16px 0px;
-  border-radius: 8px;
+  border-radius: 16px 8px 8px 16px;
+  background-color: #E6E9EF;
+}
+
+.board-row:first-child {
+  margin-top: 56px;
 }
 
 .board-index-cell {
   flex: 1 1 0;
-  font-size: 12pt;
+  font-size: 18px;
   padding: 16px;
   margin-right: 4px;
-  background-color: #F5F6F8;
-  border-bottom: 1px solid #E6E9EF;
+  background-color: #E6E9EF;
+  font-weight: normal;
+  border-radius: 16px 4px 4px 16px;
+}
+
+.board-cell:last-child > div {
+  border-radius: 4px 4px 4px 4px;
 }
 
 .board-cell {
   flex: 1 1 0;
   align-items: stretch;
   position: relative;
+  margin: 4px 0px;
+}
+
+.board-cell > div {
+  border-radius: 4px;
 }
 
 .padding-16 {
   padding: 16px;
-}
-
-.add-item-button {
-  display: none;
-  border-radius: 2px;
-  border: 1px solid #E6E9EF;
-  background-color: #FFFFFF;
-  position: absolute;
-  bottom: 8px;
-  right: 16px;
-  max-width: 24px;
-  max-height: 24px;
-}
-
-.add-item-button:hover {
-  background-color: #ddd;
-  cursor: pointer;
-}
-
-.add-item-button > img {
-  max-width: 100%;
 }
 
 .board-cell:hover > .add-item-button {
@@ -103,4 +107,5 @@ body {
 
 .item-info {
   padding: 0px 8px;
+  flex-grow: 1;
 }

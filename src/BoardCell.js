@@ -44,8 +44,8 @@ class BoardCell extends React.Component {
                             key={this.props.status.label}
                             ref={provided.innerRef}
                             isDraggingOver={snapshot.isDraggingOver}
-                            color={this.props.rowIndex % 2 ? "#F5E0E4" : "#EDF6F9"}
-                            hoverColor={this.props.rowIndex % 2 ? "#EBC2CA" : "#D0E7Ef"}
+                            color={this.props.rowIndex % 2 ? "#C5C7D0" : "#C5C7D0"}
+                            hoverColor={this.props.rowIndex % 2 ? "#CCF4E3" : "#CCF4E3"}
                         >
                             {
                                 items.map((value, index) => {

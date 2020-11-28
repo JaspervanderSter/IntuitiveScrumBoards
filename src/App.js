@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 import "./App.css";
 import Modal from "./Modal.js"
 import UserStoryRow from "./UserStoryRow.js"
@@ -6,6 +7,20 @@ import mondaySdk from "monday-sdk-js";
 import { DragDropContext } from "react-beautiful-dnd";
 import _ from "lodash"
 const monday = mondaySdk();
+
+const BoardHeaderContainer = styled.div`
+  display: flex;
+  margin-bottom: 16px;
+  position: fixed;
+  padding: 16px;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1000;
+  background-color: white;
+  box-shadow: 0 4px 8px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+`;
+
 
 class App extends React.Component {
   constructor(props) {
@@ -144,6 +159,27 @@ class App extends React.Component {
     return itemsByUserStory
   }
 
+  getBoardData() {
+    console.log(this.state.filterItemIds);
+    var mondayApiCall;
+    if (this.state.filterItemIds) {
+      mondayApiCall = monday.api(`query ($boardIds: [Int] $itemIds: [Int]) { boards (ids:$boardIds) { name columns {id} items (ids:$itemIds) { id name column_values {id title text type value} } } }`,
+        { variables: {boardIds: this.state.context.boardIds, itemIds: this.state.filterItemIds} }
+      );
+    } else {
+      mondayApiCall = monday.api(`query ($boardIds: [Int]) { boards (ids:$boardIds) { name columns {id} items { id name column_values {id title text type value} } } }`,
+        { variables: {boardIds: this.state.context.boardIds} }
+      );
+    }
+
+    mondayApiCall.then(res => {
+      this.setState({boardData: res.data});
+      if (this.state.boardData !== undefined) {
+        this.getStatusList();
+        this.getItemsObj();
+      }
+    });  
+  }
 
   componentDidMount() {
     monday.api(`query { users { id name photo_tiny} }`)
@@ -161,48 +197,24 @@ class App extends React.Component {
 
     monday.listen("context", res => {
       this.setState({context: res.data});
-      monday.api(`query ($boardIds: [Int]) { boards (ids:$boardIds) { name columns {id} items { id name column_values {id title text type value} } } }`,
-        { variables: {boardIds: this.state.context.boardIds} }
-      )
-      .then(res => {
-        this.setState({boardData: res.data});
-        if (this.state.boardData !== undefined) {
-          this.getStatusList();
-          this.getItemsObj();
-        }
-      });
-      
+      this.getBoardData();
+    });
+
+    monday.listen("itemIds", res => {
+      console.log(res);
+      this.setState({filterItemIds: res.data});
+      this.getBoardData();
     });
 
     monday.listen("settings", res => {
       this.getSettings(res)
-      monday.api(`query ($boardIds: [Int]) { boards (ids:$boardIds) { name columns {id} items { id name column_values {id title text type value} } } }`,
-        { variables: {boardIds: this.state.context.boardIds} }
-      )
-      .then(res => {
-        this.setState({boardData: res.data});
-        if (this.state.boardData !== undefined) {
-          this.getStatusList();
-          this.getItemsObj();
-        }
-      });
+      this.getBoardData();
     });
 
     monday.listen("events", async (res) => {
-      console.log(res);
       await delay(600);
-      console.log(res);
-      monday.api(`query ($boardIds: [Int]) { boards (ids:$boardIds) { name columns {id} items { id name column_values {id title text type value} } } }`,
-        { variables: {boardIds: this.state.context.boardIds} }
-      )
-      .then(res => {
-        this.setState({boardData: res.data});
-        if (this.state.boardData !== undefined) {
-          this.getStatusList();
-          this.getItemsObj();
-        }
-      });
-    })
+      this.getBoardData();
+    });
   }
 
   handleOnDragEnd(result) {
@@ -260,12 +272,14 @@ class App extends React.Component {
         <div
           className="better-scrum-board padding-16"
         >
-          <div className="board-header">
+          <BoardHeaderContainer
+            scroll={this.state.scrollPos}
+          >
             <div className="board-header-item board-header-user-story"></div>
             {this.state.orderedStatuses.map((value, index) => {
               return <div key={value.label} className="board-header-item board-header-status">{value.label}</div>
             })}
-          </div>
+          </BoardHeaderContainer>
           <DragDropContext onDragEnd={(result) => this.handleOnDragEnd(result)}>
             <div className="board-content">
               {Object.keys(itemsByUserStory).sort().map((value, index) => {

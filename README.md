@@ -1,8 +1,8 @@
-# BetterScrumBoards
-Better Scrum Boards App for Monday.com
+# Intuitive Scrum Boards
+Intuitive Scrum Boards App for Monday.com
 
 ## Introduction
-Better Scrum Boards (BSB) is an app providing Board Views to Monday.com for teams using Scrum.
+Intuitive Scrum Boards is an app providing Board Views to Monday.com for teams using Scrum.
 As of now, there has been one Board View implemented: the Sprint Board.
 
 ## Installation
